@@ -1,0 +1,231 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+header {
+    background: #007bff;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+header img.logo {
+    height: 70px;
+    cursor: pointer;
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    padding-top: 10px;
+    align-items: center;
+    transform: translateY(-50%);
+}
+header .header-center {
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+}
+header h1 {
+    margin: 0;
+    cursor: default;
+}
+header p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 300;
+}
+nav {
+    background: #0056b3;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0.75rem 0;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+nav a:hover {
+    color: #ffc107;
+}
+.main-content {
+    display: flex;
+    flex: 1;
+    max-width: 1200px;
+    margin: 1rem auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+.sidebar {
+    width: 250px;
+    background: #e9ecef;
+    padding: 1rem;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.sidebar h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.5rem;
+}
+.sidebar button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+.sidebar button:hover {
+    background: #0056b3;
+}
+.content-area {
+    flex: 1;
+    padding: 2rem;
+}
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.category {
+    flex: 1 1 45%;
+    background: #e9ecef;
+    padding: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-align: center;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.category:hover {
+    background: #007bff;
+    color: white;
+}
+.category img {
+    max-width: 80px;
+    height: auto;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 400px;
+}
+label {
+    font-weight: bold;
+}
+input[type="text"], input[type="number"], select, input[type="email"], input[type="password"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+button.submit-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+button.submit-btn:hover {
+    background: #0056b3;
+}
+.order-summary {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    color: #155724;
+    display: none;
+    max-width: 400px;
+}
+.auth-forms {
+    max-width: 400px;
+}
+.auth-forms h2 {
+    margin-top: 0;
+}
+.auth-forms form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.auth-forms input[type="email"], .auth-forms input[type="password"], .auth-forms input[type="text"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.auth-forms button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.auth-forms button:hover {
+    background: #0056b3;
+}
+.hidden {
+    display: none;
+}
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #007bff;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+@media (max-width: 900px) {
+    .main-content {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+    }
+    .content-area {
+        padding: 1rem;
+    }
+}
+#customerSupportContent {
+    /* Remove background image from here */
+    color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.5); /* Add semi-transparent background for readability */
+}

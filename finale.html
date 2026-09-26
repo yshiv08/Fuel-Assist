@@ -1,0 +1,3031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FuelSHOT - Emergency Fuel Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* Reset and base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+       
+        :root {
+            --primary: #ff6f61;
+            --primary-dark: #e85c50;
+            --secondary: #2c5364;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --card-bg: #1e1e1e;
+            --section-bg: #181818;
+            --transition: all 0.3s ease;
+        }
+       
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+       
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+       
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+       
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+       
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+       
+        .logo {
+            height: 45px;
+            margin-right: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+       
+        .logo:hover {
+            transform: scale(1.05);
+        }
+       
+        .brand-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+       
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+       
+        .search-bar {
+            position: relative;
+        }
+       
+        .search-bar input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 10px 40px 10px 20px;
+            color: var(--light);
+            width: 250px;
+            transition: var(--transition);
+        }
+       
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.15);
+            width: 300px;
+        }
+       
+        .search-bar button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+        }
+       
+        .user-menu {
+            position: relative;
+        }
+       
+        .user-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+       
+        .user-icon:hover {
+            background: var(--primary-dark);
+        }
+       
+        /* Navigation Styles */
+        nav {
+            background: var(--section-bg);
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 76px;
+            z-index: 999;
+        }
+       
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+       
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+       
+        .nav-item {
+            position: relative;
+        }
+       
+        .nav-link {
+            display: block;
+            padding: 15px 20px;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+       
+        .nav-link:hover {
+            color: var(--primary);
+        }
+       
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+       
+        .nav-link:hover::after {
+            width: 100%;
+        }
+       
+        .nav-link.active {
+            color: var(--primary);
+        }
+       
+        .nav-link.active::after {
+            width: 100%;
+        }
+       
+        /* Dropdown */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--card-bg);
+            min-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition);
+            z-index: 100;
+        }
+       
+        .dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+       
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+       
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+       
+        .dropdown-item:hover {
+            background: rgba(255,111,97,0.1);
+            color: var(--primary);
+        }
+       
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+       
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.95rem;
+        }
+       
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+       
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+       
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+       
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+       
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(44,83,100,0.9) 0%, rgba(15,32,39,0.9) 100%), url('https://images.unsplash.com/photo-1549399542-7e247f5c4c4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+        }
+       
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+       
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+       
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+       
+        .btn-hero {
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255,111,97,0.4);
+        }
+       
+        .btn-hero:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,111,97,0.6);
+        }
+       
+        /* Main Content */
+        main {
+            padding: 60px 0;
+            background: var(--dark);
+        }
+       
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+       
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+       
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+       
+        /* Fuel Cards */
+        .fuel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+       
+        .fuel-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+       
+        .fuel-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255,111,97,0.3);
+            border-color: var(--primary);
+        }
+       
+        .fuel-card img {
+            height: 80px;
+            margin-bottom: 20px;
+        }
+       
+        .fuel-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+       
+        .fuel-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+       
+        .fuel-card .btn {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+       
+        /* Order Form Section */
+        .order-section {
+            background: var(--section-bg);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 60px;
+        }
+       
+        .order-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+       
+        .order-info h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+       
+        .order-info p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+       
+        .order-info ul {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+       
+        .order-info li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+       
+        .order-info li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+       
+        .order-form {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+       
+        .order-form h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            text-align: center;
+            color: var(--light);
+        }
+       
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+       
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--light);
+        }
+       
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+       
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.08);
+        }
+       
+        .form-control::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+       
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+       
+        .btn-submit:hover {
+            background: var(--primary-dark);
+        }
+       
+        /* Order Summary */
+        .order-summary {
+            background: rgba(255,111,97,0.1);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+        }
+       
+        .order-summary h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+       
+        .order-summary p {
+            margin-bottom: 10px;
+        }
+       
+        /* Content Sections */
+        .content-section {
+            background: var(--section-bg);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+       
+        .content-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+       
+        .content-section p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+       
+        /* Profile Section */
+        .profile-container {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+       
+        .profile-pic-container {
+            text-align: center;
+        }
+       
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+       
+        .profile-pic:hover {
+            transform: scale(1.03);
+        }
+       
+        .profile-form {
+            flex: 1;
+        }
+       
+        /* Orders Section */
+        .orders-list {
+            margin-top: 30px;
+        }
+       
+        .order-item {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+       
+        .order-details h4 {
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+       
+        .order-details p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+       
+        .order-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+       
+        .status-delivered {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+       
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+       
+        /* Customer Support */
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+       
+        .support-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            transition: var(--transition);
+        }
+       
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+       
+        .support-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+       
+        .support-card h3 {
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+       
+        .support-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+       
+        .support-card a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+       
+        .support-card a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+       
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 70px 0 30px;
+            color: var(--gray);
+        }
+       
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+       
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--light);
+            position: relative;
+        }
+       
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+       
+        .footer-col p {
+            margin-bottom: 20px;
+        }
+       
+        .footer-links {
+            list-style: none;
+        }
+       
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+       
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+       
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+       
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+       
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: var(--light);
+            transition: var(--transition);
+        }
+       
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+       
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+       
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+       
+        .text-center {
+            text-align: center;
+        }
+       
+        .mt-20 {
+            margin-top: 20px;
+        }
+       
+        /* Alert Styles */
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            cursor: pointer;
+            animation: slideIn 0.3s ease;
+        }
+       
+        .alert:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+       
+        .alert-success {
+            background-color: #4caf50;
+        }
+       
+        .alert-error {
+            background-color: #f44336;
+        }
+       
+        .alert-warning {
+            background-color: #ff9800;
+        }
+       
+        .alert-info {
+            background-color: #2196f3;
+        }
+       
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+       
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+       
+        /* Form validation styles */
+        .form-control.error {
+            border-color: #f44336 !important;
+            background-color: rgba(244, 67, 54, 0.1) !important;
+        }
+       
+        .error-message {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+       
+        /* Password toggle button */
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+        }
+       
+        /* Loading spinner */
+        .btn .fa-spinner {
+            margin-right: 8px;
+        }
+       
+        /* Responsive */
+        @media (max-width: 992px) {
+            .order-container {
+                grid-template-columns: 1fr;
+            }
+           
+            .profile-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+       
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+           
+            .hero p {
+                font-size: 1.1rem;
+            }
+           
+            .nav-menu {
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--section-bg);
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+                display: none;
+            }
+           
+            .nav-menu.active {
+                display: flex;
+            }
+           
+            .nav-item {
+                width: 100%;
+            }
+           
+            .nav-link {
+                padding: 15px 20px;
+            }
+           
+            .dropdown {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background: rgba(0,0,0,0.2);
+                display: none;
+            }
+           
+            .nav-item:hover .dropdown {
+                display: block;
+            }
+           
+            .mobile-menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--light);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+           
+            .auth-buttons {
+                display: none;
+            }
+           
+            .search-bar input {
+                width: 180px;
+            }
+           
+            .search-bar input:focus {
+                width: 200px;
+            }
+        }
+       
+        @media (max-width: 576px) {
+            .hero {
+                padding: 70px 0;
+            }
+           
+            .hero h1 {
+                font-size: 2rem;
+            }
+           
+            .section-title h2 {
+                font-size: 2rem;
+            }
+           
+            .fuel-grid {
+                grid-template-columns: 1fr;
+            }
+           
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+           
+            .footer-col h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+           
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo-container">
+                <img src="logo.png" alt="FuelSHOT Logo" class="logo" id="logo" title="About Us" />
+                <div class="brand-name">FuelSHOT</div>
+            </div>
+           
+            <div class="header-actions">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search services..." id="searchInput" />
+                    <button id="searchButton"><i class="fas fa-search"></i></button>
+                </div>
+               
+                <div class="user-menu">
+                    <div class="user-icon" id="userIcon" tabindex="0">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="dropdown" id="userDropdown">
+                        <a href="#" class="dropdown-item" id="profileBtn" tabindex="-1">Profile Info</a>
+                        <a href="#" class="dropdown-item" id="ordersBtn" tabindex="-1">Orders Placed</a>
+                        <a href="#" class="dropdown-item" id="customerSupportBtn" tabindex="-1">Customer Support</a>
+                        <a href="#" class="dropdown-item" id="logoutBtn" class="hidden" tabindex="-1">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+   
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" id="navHome">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="navAbout">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="navRescue">Rescue Fuel</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="navLogin">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="navSignup">Sign Up</a>
+                </li>
+            </ul>
+           
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+   
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content" id="hero-page">
+            <h1>Emergency Fuel Delivery at Your Fingertips</h1>
+            <p>Never run out of fuel again. We deliver petrol and diesel directly to your location, 24/7.</p>
+            <button class="btn-hero">Order Fuel Now</button>
+        </div>
+    </section>
+   
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Home Content -->
+            <section id="homeContent">
+                <div class="section-title">
+                    <h2>Our Fuel Services</h2>
+                    <p>Choose from our range of high-quality fuel options delivered straight to you</p>
+                </div>
+               
+                <div class="fuel-grid">
+                    <div class="fuel-card" data-type="petrol" tabindex="0">
+                        <img src="petrolbtl.png" alt="Petrol" />
+                        <h3>Regular Petrol</h3>
+                        <p>Standard unleaded petrol for everyday vehicles</p>
+                        <button class="btn btn-outline">Select</button>
+                    </div>
+                   
+                    <div class="fuel-card" data-type="diesel" tabindex="0">
+                        <img src="disielbtl.png" alt="Diesel" />
+                        <h3>Regular Diesel</h3>
+                        <p>High-quality diesel for diesel engines</p>
+                        <button class="btn btn-outline">Select</button>
+                    </div>
+                   
+                    <div class="fuel-card" data-type="speed-petrol" tabindex="0">
+                        <img src="petrolbtl.png" alt="Speed Petrol" />
+                        <h3>Speed Petrol</h3>
+                        <p>High-performance petrol for enhanced engine efficiency</p>
+                        <button class="btn btn-outline">Select</button>
+                    </div>
+                   
+                    <div class="fuel-card" data-type="speed-diesel" tabindex="0">
+                        <img src="disielbtl.png" alt="Speed Diesel" />
+                        <h3>Speed Diesel</h3>
+                        <p>Premium diesel for better performance and mileage</p>
+                        <button class="btn btn-outline">Select</button>
+                    </div>
+                </div>
+               
+                <div class="order-section">
+                    <div class="order-container">
+                        <div class="order-info">
+                            <h3>How It Works</h3>
+                            <p>Getting emergency fuel delivery is simple with our streamlined process:</p>
+                            <ul>
+                                <li>Select your fuel type and quantity</li>
+                                <li>Provide your delivery location</li>
+                                <li>Confirm your order and make payment</li>
+                                <li>Track your delivery in real-time</li>
+                            </ul>
+                            <p>Our average delivery time is just 30 minutes!</p>
+                        </div>
+                       
+                        <div class="order-form">
+                            <h3>Place Your Order</h3>
+                            <form id="orderForm">
+                                <div class="form-group">
+                                    <label for="fuelType">Fuel Type</label>
+                                    <select id="fuelType" name="fuelType" class="form-control" required>
+                                        <option value="" style="color: #0a0a0a;">-- Select Fuel Type --</option>
+                                        <option value="petrol" style="color: #0a0a0a;">Regular Petrol</option>
+                                        <option value="diesel" style="color: #0a0a0a;">Regular Diesel</option>
+                                        <option value="speed-petrol" style="color: #0a0a0a;">Speed Petrol</option>
+                                        <option value="speed-diesel" style="color: #0a0a0a;">Speed Diesel</option>
+                                    </select>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label for="quantity">Quantity (liters)</label>
+                                    <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="1000" required />
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label for="address">Delivery Address</label>
+                                    <input type="text" id="address" name="address" class="form-control" placeholder="Enter your delivery address" required />
+                                </div>
+                               
+                                <button type="submit" class="btn-submit">Order Now</button>
+                            </form>
+                           
+                            <div class="order-summary" id="orderSummary" style="display:none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+           
+            <!-- About Content -->
+            <section id="aboutContent" class="hidden content-section">
+                <h2>About FuelSHOT</h2>
+                <p>FuelSHOT is an innovative on-demand emergency fuel delivery service that aims to revolutionize how people refuel in urgent situations. Whether your vehicle breaks down due to an empty tank, or you're in a remote area without access to a fuel station—FuelSHOT ensures quick and reliable delivery of fuel right to your location.</p>
+               
+                <p>Our mission is simple: To eliminate fuel emergencies by making petrol and diesel instantly accessible, anywhere, anytime. We understand the frustration and inconvenience of running out of fuel, especially in critical situations. That's why we've created a service that brings the fuel station to you.</p>
+               
+                <p>With our network of certified fuel suppliers and delivery vehicles, we guarantee high-quality fuel delivered safely and efficiently. Our user-friendly platform allows you to place orders in just a few clicks, with real-time tracking so you know exactly when to expect your delivery.</p>
+               
+                <p>At FuelSHOT, we're committed to providing exceptional service, reliability, and peace of mind to all our customers. Join thousands of satisfied customers who have made FuelSHOT their trusted fuel delivery partner.</p>
+               
+                <p>FOUNDERS:
+                           SATHVIK SIMBA, SHIVA KUMAR 
+                </p>
+            </section>
+           
+            <!-- Rescue Fuel Content -->
+            <section id="rescueContent" class="hidden content-section">
+                <h2>Rescue Fuel Service</h2>
+                <p>Our Rescue Fuel service is designed for emergency situations when you find yourself stranded with an empty tank. This premium service prioritizes your delivery to get you back on the road as quickly as possible.</p>
+               
+                <div class="mt-20">
+                    <h3>What Our Rescue Service Includes:</h3>
+                    <ul style="list-style: none; margin-top: 20px;">
+                        <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+                            <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 3px; color: var(--primary);"></i>
+                            Priority delivery within 20 minutes (in service areas)
+                        </li>
+                        <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+                            <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 3px; color: var(--primary);"></i>
+                            24/7 availability including holidays
+                        </li>
+                        <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+                            <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 3px; color: var(--primary);"></i>
+                            Real-time tracking of your delivery
+                        </li>
+                        <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+                            <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 3px; color: var(--primary);"></i>
+                            Emergency roadside assistance if needed
+                        </li>
+                    </ul>
+                </div>
+               
+                <p class="mt-20">Our Rescue Fuel service is coming soon to more locations. Check back for updates on our expansion!</p>
+            </section>
+           
+            <!-- Login Content -->
+            <section id="loginContent" class="hidden content-section">
+                <h2>Login to Your Account</h2>
+                <p>Access your account to view order history, manage your profile, and place orders faster.</p>
+               
+                <div class="order-form" style="max-width: 500px; margin: 30px auto 0;">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address</label>
+                            <input type="email" id="loginEmail" name="loginEmail" class="form-control" placeholder="Enter your email" required />
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" name="loginPassword" class="form-control" placeholder="Enter your password" required />
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                       
+                        <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" id="rememberMe" style="margin-right: 8px;" />
+                                <label for="rememberMe" style="margin-bottom: 0;">Remember me</label>
+                            </div>
+                            <a href="#" style="color: var(--primary);">Forgot password?</a>
+                        </div>
+                       
+                        <button type="submit" class="btn-submit">Login</button>
+                    </form>
+                   
+                    <div class="text-center mt-20">
+                        <p>Don't have an account? <a href="#" id="signupLink" style="color: var(--primary);">Sign up now</a></p>
+                    </div>
+                </div>
+            </section>
+           
+            <!-- Signup Content -->
+            <section id="signupContent" class="hidden content-section">
+                <h2>Create Your Account</h2>
+                <p>Join FuelSHOT today and never worry about running out of fuel again.</p>
+               
+                <div class="order-form" style="max-width: 500px; margin: 30px auto 0;">
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <label for="signupName">Full Name</label>
+                            <input type="text" id="signupName" name="signupName" class="form-control" placeholder="Enter your full name" required />
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="signupEmail">Email Address</label>
+                            <input type="email" id="signupEmail" name="signupEmail" class="form-control" placeholder="Enter your email" required />
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" name="signupPassword" class="form-control" placeholder="Create a password" required />
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required />
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                       
+                        <div class="form-group">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" id="agreeTerms" style="margin-right: 8px;" required />
+                                <label for="agreeTerms" style="margin-bottom: 0;">I agree to the <a href="#" style="color: var(--primary);">Terms of Service</a> and <a href="#" style="color: var(--primary);">Privacy Policy</a></label>
+                            </div>
+                        </div>
+                       
+                        <button type="submit" class="btn-submit">Sign Up</button>
+                    </form>
+                   
+                    <div class="text-center mt-20">
+                        <p>Already have an account? <a href="#" id="loginLink" style="color: var(--primary);">Login now</a></p>
+                    </div>
+                </div>
+            </section>
+           
+            <!-- Profile Info Content -->
+            <section id="profileInfoContent" class="hidden content-section">
+                <h2>Profile Information</h2>
+                <p>Manage your personal details and account settings.</p>
+               
+                <div class="profile-container">
+                    <div class="profile-pic-container">
+                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile Picture" class="profile-pic" id="profilePic" title="Click to change profile picture" />
+                        <button class="btn btn-outline">Change Photo</button>
+                    </div>
+                   
+                    <div class="profile-form order-form">
+                        <form id="profileForm">
+                            <div class="form-group">
+                                <label for="profileNameInput">Full Name</label>
+                                <input type="text" id="profileNameInput" name="profileNameInput" class="form-control" />
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="profileEmailInput">Email Address</label>
+                                <input type="email" id="profileEmailInput" name="profileEmailInput" class="form-control" />
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="profilePhoneInput">Phone Number</label>
+                                <input type="tel" id="profilePhoneInput" name="profilePhoneInput" class="form-control" placeholder="Enter your phone number" />
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="profileAddressInput">Default Address</label>
+                                <input type="text" id="profileAddressInput" name="profileAddressInput" class="form-control" placeholder="Enter your default address" />
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="profilePicInput">Change Profile Picture</label>
+                                <input type="file" id="profilePicInput" accept="image/*" class="form-control" />
+                            </div>
+                           
+                            <button type="submit" class="btn-submit">Save Profile</button>
+                        </form>
+                       
+                        <div id="profileSaveMessage" style="color: #4caf50; margin-top: 1rem; display: none; text-align: center;">Profile saved successfully!</div>
+                    </div>
+                </div>
+            </section>
+           
+            <!-- Orders Placed Content -->
+            <section id="ordersPlacedContent" class="hidden content-section">
+                <h2>Your Orders</h2>
+                <p>View your order history and track current deliveries.</p>
+               
+                <div class="orders-list">
+                    <div class="order-item">
+                        <div class="order-details">
+                            <h4>Order #FS-2024-001</h4>
+                            <p>Regular Petrol • 15 liters • Delivered to 123 Main St</p>
+                            <p>Placed on: May 15, 2024 • 10:30 AM</p>
+                        </div>
+                        <div class="order-status status-delivered">Delivered</div>
+                    </div>
+                   
+                    <div class="order-item">
+                        <div class="order-details">
+                            <h4>Order #FS-2024-002</h4>
+                            <p>Speed Diesel • 20 liters • Delivering to 456 Park Ave</p>
+                            <p>Placed on: May 18, 2024 • 2:45 PM</p>
+                        </div>
+                        <div class="order-status status-pending">In Transit</div>
+                    </div>
+                </div>
+               
+                <div class="text-center mt-20">
+                    <p>Showing 2 of 2 orders</p>
+                </div>
+            </section>
+           
+            <!-- Customer Support Content -->
+            <section id="customerSupportContent" class="hidden content-section">
+                <h2>Customer Support</h2>
+                <p>We're here to help! Contact our support team for any questions or assistance.</p>
+               
+                <div class="support-grid">
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <h3>Call Us</h3>
+                        <p>Speak directly with our support team</p>
+                        <a href="tel:+18001234567">+1-800-123-4567</a>
+                    </div>
+                   
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email Us</h3>
+                        <p>Send us a message and we'll respond within 24 hours</p>
+                        <a href="mailto:support@fuelshot.com">support@fuelshot.com</a>
+                    </div>
+                   
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Live Chat</h3>
+                        <p>Chat with us in real-time for immediate assistance</p>
+                        <a href="#">Start Chat</a>
+                    </div>
+                   
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Visit Us</h3>
+                        <p>Our headquarters location</p>
+                        <p>123 Fuel Street, Energy City, Country</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+   
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>FuelSHOT</h3>
+                    <p>Your trusted partner for emergency fuel delivery. We're here to keep you moving, wherever you are.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+               
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" id="footerHome">Home</a></li>
+                        <li><a href="#" id="footerAbout">About Us</a></li>
+                        <li><a href="#" id="footerRescue">Rescue Fuel</a></li>
+                        <li><a href="#" id="footerSupport">Customer Support</a></li>
+                    </ul>
+                </div>
+               
+                <div class="footer-col">
+                    <h3>Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Regular Petrol Delivery</a></li>
+                        <li><a href="#">Regular Diesel Delivery</a></li>
+                        <li><a href="#">Speed Petrol Delivery</a></li>
+                        <li><a href="#">Speed Diesel Delivery</a></li>
+                    </ul>
+                </div>
+               
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i> 123 Fuel Street, Energy City</li>
+                        <li><i class="fas fa-phone" style="margin-right: 10px;"></i> +1-800-123-4567</li>
+                        <li><i class="fas fa-envelope" style="margin-right: 10px;"></i> support@fuelshot.com</li>
+                    </ul>
+                </div>
+            </div>
+           
+            <div class="copyright">
+                &copy; 2024 FuelSHOT. All rights reserved.
+            </div>
+        </div>
+    </footer>
+   
+    <script>
+        // FuelSHOT Complete Functionality Script with Improvements
+        // Global state management
+        let currentUser = null;
+        let isLoggedIn = false;
+        let currentSection = 'home';
+        let orders = [
+            {
+                id: 'FS-2024-001',
+                fuelType: 'Regular Petrol',
+                quantity: 15,
+                address: '123 Main St',
+                date: 'May 15, 2024',
+                time: '10:30 AM',
+                status: 'delivered'
+            },
+            {
+                id: 'FS-2024-002',
+                fuelType: 'Speed Diesel',
+                quantity: 20,
+                address: '456 Park Ave',
+                date: 'May 18, 2024',
+                time: '2:45 PM',
+                status: 'pending'
+            }
+        ];
+       
+        // Fuel pricing configuration
+        const fuelPricing = {
+            basePrices: {
+                'petrol': 105.50,
+                'diesel': 94.50,
+                'speed-petrol': 115.75,
+                'speed-diesel': 105.25
+            },
+            currency: 'INR',
+            deliveryFee: 50.00,
+            taxRate: 0.18, // 18% GST
+            getEffectivePrice: function(fuelType) {
+                return this.basePrices[fuelType] || 0;
+            },
+            calculateTotal: function(fuelType, quantity) {
+                const basePrice = this.getEffectivePrice(fuelType);
+                const subtotal = basePrice * quantity;
+                const tax = subtotal * this.taxRate;
+                const total = subtotal + tax + this.deliveryFee;
+               
+                return {
+                    basePrice: basePrice,
+                    subtotal: subtotal,
+                    tax: tax,
+                    deliveryFee: this.deliveryFee,
+                    total: total
+                };
+            }
+        };
+       
+        // API service layer for future backend integration
+        const apiService = {
+            // Base URL - would be your backend API URL
+            baseUrl: 'https://api.fuelshot.com',
+           
+            // Generic request method
+            async request(endpoint, options = {}) {
+                const url = `${this.baseUrl}${endpoint}`;
+                const token = localStorage.getItem('fuelshot_token');
+               
+                const defaultOptions = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token && { Authorization: `Bearer ${token}` })
+                    }
+                };
+               
+                const config = { ...defaultOptions, ...options };
+               
+                try {
+                    const response = await fetch(url, config);
+                   
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                    }
+                   
+                    return await response.json();
+                } catch (error) {
+                    console.error('API request failed:', error);
+                    throw error;
+                }
+            },
+           
+            // Auth methods
+            async login(email, password) {
+                return this.request('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password })
+                });
+            },
+           
+            async signup(userData) {
+                return this.request('/auth/signup', {
+                    method: 'POST',
+                    body: JSON.stringify(userData)
+                });
+            },
+           
+            // User methods
+            async getProfile() {
+                return this.request('/user/profile');
+            },
+           
+            async updateProfile(userData) {
+                return this.request('/user/profile', {
+                    method: 'PUT',
+                    body: JSON.stringify(userData)
+                });
+            },
+           
+            // Order methods
+            async getOrders() {
+                return this.request('/orders');
+            },
+           
+            async createOrder(orderData) {
+                return this.request('/orders', {
+                    method: 'POST',
+                    body: JSON.stringify(orderData)
+                });
+            },
+           
+            // Fuel pricing
+            async getFuelPrices() {
+                return this.request('/fuel/prices');
+            }
+        };
+       
+        // Check if localStorage is available
+        function storageAvailable(type) {
+            try {
+                const storage = window[type];
+                const x = '__storage_test__';
+                storage.setItem(x, x);
+                storage.removeItem(x);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+       
+        // Create a fallback storage object
+        const fallbackStorage = {
+            data: {},
+            setItem: function(id, val) {
+                this.data[id] = String(val);
+            },
+            getItem: function(id) {
+                return this.data[id] || null;
+            },
+            removeItem: function(id) {
+                delete this.data[id];
+            }
+        };
+       
+        // Determine which storage to use
+        const appStorage = storageAvailable('localStorage') ? localStorage : fallbackStorage;
+       
+        // DOM Elements
+        const elements = {
+            // Navigation
+            navLinks: document.querySelectorAll('.nav-link'),
+            navHome: document.getElementById('navHome'),
+            navAbout: document.getElementById('navAbout'),
+            navRescue: document.getElementById('navRescue'),
+            navLogin: document.getElementById('navLogin'),
+            navSignup: document.getElementById('navSignup'),
+           
+            // User menu
+            userIcon: document.getElementById('userIcon'),
+            userDropdown: document.getElementById('userDropdown'),
+            profileBtn: document.getElementById('profileBtn'),
+            ordersBtn: document.getElementById('ordersBtn'),
+            customerSupportBtn: document.getElementById('customerSupportBtn'),
+            logoutBtn: document.getElementById('logoutBtn'),
+           
+            // Content sections
+            homeContent: document.getElementById('homeContent'),
+            aboutContent: document.getElementById('aboutContent'),
+            rescueContent: document.getElementById('rescueContent'),
+            loginContent: document.getElementById('loginContent'),
+            signupContent: document.getElementById('signupContent'),
+            profileInfoContent: document.getElementById('profileInfoContent'),
+            ordersPlacedContent: document.getElementById('ordersPlacedContent'),
+            customerSupportContent: document.getElementById('customerSupportContent'),
+           
+            // Hero section
+            heroSection: document.querySelector('.hero'),
+           
+            // Forms
+            orderForm: document.getElementById('orderForm'),
+            loginForm: document.getElementById('loginForm'),
+            signupForm: document.getElementById('signupForm'),
+            profileForm: document.getElementById('profileForm'),
+           
+            // Order summary
+            orderSummary: document.getElementById('orderSummary'),
+           
+            // Fuel cards
+            fuelCards: document.querySelectorAll('.fuel-card'),
+           
+            // Mobile menu
+            mobileMenuToggle: document.getElementById('mobileMenuToggle'),
+            navMenu: document.getElementById('navMenu'),
+           
+            // Logo
+            logo: document.getElementById('logo'),
+           
+            // Footer links
+            footerLinks: document.querySelectorAll('[id^="footer"]'),
+           
+            // Links
+            signupLink: document.getElementById('signupLink'),
+            loginLink: document.getElementById('loginLink'),
+           
+            // Hero button
+            heroBtn: document.querySelector('.btn-hero'),
+           
+            // Profile elements
+            profilePic: document.getElementById('profilePic'),
+            profilePicInput: document.getElementById('profilePicInput'),
+            profileSaveMessage: document.getElementById('profileSaveMessage'),
+           
+            // Search elements
+            searchInput: document.getElementById('searchInput'),
+            searchButton: document.getElementById('searchButton')
+        };
+       
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                initializeApp();
+                setupEventListeners();
+                updateUI();
+               
+                // Load fuel prices
+                loadFuelPrices();
+               
+                // Set up periodic price updates
+                setInterval(updateFuelPrices, 300000); // Every 5 minutes
+               
+                console.log('FuelSHOT app initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize app:', error);
+                showAlert('Failed to initialize application. Please refresh the page.', 'error');
+            }
+        });
+       
+        // Initialize application
+        function initializeApp() {
+            console.log('FuelSHOT app initialized');
+           
+            // Check if critical elements exist
+            const criticalElements = [
+                'navHome', 'navAbout', 'navRescue', 'navLogin', 'navSignup',
+                'userIcon', 'userDropdown', 'homeContent', 'aboutContent',
+                'rescueContent', 'loginContent', 'signupContent'
+            ];
+           
+            const missingElements = criticalElements.filter(id => !document.getElementById(id));
+           
+            if (missingElements.length > 0) {
+                console.error('Missing critical elements:', missingElements);
+                showAlert('Application initialization failed. Please refresh the page.', 'error');
+                return;
+            }
+           
+            // Setup image error handling
+            setupImageErrorHandling();
+           
+            // Setup password toggles
+            setupPasswordToggles();
+           
+            // Setup keyboard navigation
+            setupKeyboardNavigation();
+           
+            // Setup touch gestures
+            setupTouchGestures();
+           
+            // Register service worker
+            registerServiceWorker();
+           
+            // Setup online status
+            setupOnlineStatus();
+           
+            // Proceed with initialization
+            showSection('home');
+           
+            // Check if user is logged in
+            checkAuthStatus();
+        }
+       
+        // Setup image error handling
+        function setupImageErrorHandling() {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    // Set a fallback or placeholder image
+                    if (this.alt.includes('Logo')) {
+                        this.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmNmY2MSI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIvPjxwYXRoIGQ9Ik0xMiA2Yy0yLjc2IDAtNSAyLjY5LTUgNnMyLjY5IDYgNiA2IDYtMi42OSA2LTYtMi42OS02LTYtNnptMCA4Yy0xLjEgMC0yLS45LTItMnMuOS0yIDItMiAyIC45IDIgMi0uOSAyLTIgMnoiLz48L3N2Zz4=';
+                    } else if (this.alt.includes('Petrol') || this.alt.includes('Diesel')) {
+                        this.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmNmY2MSI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIvPjxwYXRoIGQ9Ik0xMiA3Yy0yLjc2IDAtNSAyLjI0LTUgNXMyLjI0IDUgNSA1IDUtMi4yNCA1LTVzLTIuMjQtNS01LTV6bTAgOGMtMS42NiAwLTMtMS4zNC0zLTNzMS4zNC0zIDMtMyAxIDEuMzQgMyAzLTEuMzQgMy0zIDN6Ii8+PC9zdmc+';
+                    }
+                });
+            });
+        }
+       
+        // Setup password toggles
+        function setupPasswordToggles() {
+            const passwordInputs = document.querySelectorAll('input[type="password"]');
+           
+            passwordInputs.forEach(input => {
+                // Create toggle button
+                const toggleButton = document.createElement('button');
+                toggleButton.type = 'button';
+                toggleButton.className = 'password-toggle';
+                toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+               
+                // Make the input container position relative
+                input.parentNode.style.position = 'relative';
+               
+                // Add toggle button after the input
+                input.parentNode.appendChild(toggleButton);
+               
+                // Add toggle functionality
+                toggleButton.addEventListener('click', () => {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                    } else {
+                        input.type = 'password';
+                        toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+                    }
+                });
+            });
+        }
+       
+        // Setup keyboard navigation
+        function setupKeyboardNavigation() {
+            // Make all interactive elements keyboard accessible
+            const interactiveElements = document.querySelectorAll('button, a, [tabindex]');
+           
+            interactiveElements.forEach(element => {
+                // Ensure all buttons and links have a tabindex
+                if (!element.hasAttribute('tabindex')) {
+                    element.setAttribute('tabindex', '0');
+                }
+               
+                // Add keyboard event listeners
+                element.addEventListener('keydown', (e) => {
+                    // Handle Enter key for buttons and links
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        element.click();
+                    }
+                });
+            });
+           
+            // Add keyboard navigation for dropdown menus
+            const userIcon = document.getElementById('userIcon');
+            const userDropdown = document.getElementById('userDropdown');
+           
+            if (userIcon && userDropdown) {
+                userIcon.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleUserDropdown();
+                    }
+                });
+               
+                // Add keyboard navigation to dropdown items
+                const dropdownItems = userDropdown.querySelectorAll('.dropdown-item');
+                dropdownItems.forEach((item, index) => {
+                    item.setAttribute('tabindex', '-1'); // Initially not tabbable
+                   
+                    item.addEventListener('keydown', (e) => {
+                        // Handle arrow keys for navigation
+                        if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                            nextItem.focus();
+                        } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                            prevItem.focus();
+                        } else if (e.key === 'Escape') {
+                            e.preventDefault();
+                            closeUserDropdown();
+                            userIcon.focus();
+                        }
+                    });
+                });
+               
+                // Make dropdown items tabbable when dropdown is open
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.attributeName === 'class') {
+                            const isOpen = userDropdown.classList.contains('show');
+                            dropdownItems.forEach(item => {
+                                item.setAttribute('tabindex', isOpen ? '0' : '-1');
+                            });
+                        }
+                    });
+                });
+               
+                observer.observe(userDropdown, { attributes: true });
+            }
+        }
+       
+        // Setup touch gestures
+        function setupTouchGestures() {
+            let touchStartX = 0;
+            let touchEndX = 0;
+           
+            // Add touch event listeners to the main container
+            const mainContainer = document.querySelector('main');
+            if (!mainContainer) return;
+           
+            mainContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+           
+            mainContainer.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+           
+            function handleSwipe() {
+                const swipeThreshold = 50; // Minimum distance for a swipe
+                const diff = touchStartX - touchEndX;
+               
+                if (Math.abs(diff) < swipeThreshold) return;
+               
+                if (diff > 0) {
+                    // Swipe left - go to next section
+                    navigateSection('next');
+                } else {
+                    // Swipe right - go to previous section
+                    navigateSection('prev');
+                }
+            }
+           
+            function navigateSection(direction) {
+                const sections = ['home', 'about', 'rescue', 'login', 'signup', 'profile', 'orders', 'support'];
+                const currentIndex = sections.indexOf(currentSection);
+               
+                if (currentIndex === -1) return;
+               
+                let nextIndex;
+                if (direction === 'next') {
+                    nextIndex = (currentIndex + 1) % sections.length;
+                } else {
+                    nextIndex = (currentIndex - 1 + sections.length) % sections.length;
+                }
+               
+                showSection(sections[nextIndex]);
+            }
+        }
+       
+        // Register service worker
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(registration => {
+                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                        })
+                        .catch(error => {
+                            console.log('ServiceWorker registration failed: ', error);
+                        });
+                });
+            } else {
+                console.log('Service workers are not supported.');
+            }
+        }
+       
+        // Setup online status
+        function setupOnlineStatus() {
+            const updateOnlineStatus = () => {
+                const condition = navigator.onLine ? "online" : "offline";
+               
+                if (condition === "offline") {
+                    showAlert('You are currently offline. Some features may not be available.', 'warning');
+                } else {
+                    showAlert('You are back online!', 'success');
+                }
+            };
+           
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+           
+            // Check initial status
+            updateOnlineStatus();
+        }
+       
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+       
+        // Validate form
+        function validateForm(formId) {
+            const form = document.getElementById(formId);
+            if (!form) return true;
+           
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+           
+            inputs.forEach(input => {
+                // Remove any existing error messages
+                const existingError = input.parentNode.querySelector('.error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+               
+                // Remove error styling
+                input.classList.remove('error');
+               
+                // Check if the input is empty
+                if (!input.value.trim()) {
+                    showFieldError(input, 'This field is required');
+                    isValid = false;
+                    return;
+                }
+               
+                // Specific validations based on input type
+                if (input.type === 'email') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(input.value)) {
+                        showFieldError(input, 'Please enter a valid email address');
+                        isValid = false;
+                    }
+                }
+               
+                if (input.type === 'password' && input.value.length < 8) {
+                    showFieldError(input, 'Password must be at least 8 characters long');
+                    isValid = false;
+                }
+               
+                if (input.type === 'tel') {
+                    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+                    if (!phoneRegex.test(input.value)) {
+                        showFieldError(input, 'Please enter a valid phone number');
+                        isValid = false;
+                    }
+                }
+               
+                if (input.id === 'quantity') {
+                    const quantity = parseInt(input.value);
+                    if (isNaN(quantity) || quantity < 1 || quantity > 1000) {
+                        showFieldError(input, 'Quantity must be between 1 and 1000 liters');
+                        isValid = false;
+                    }
+                }
+            });
+           
+            // Special validation for password confirmation
+            if (formId === 'signupForm') {
+                const password = document.getElementById('signupPassword');
+                const confirmPassword = document.getElementById('confirmPassword');
+               
+                if (password && confirmPassword && password.value !== confirmPassword.value) {
+                    showFieldError(confirmPassword, 'Passwords do not match');
+                    isValid = false;
+                }
+            }
+           
+            return isValid;
+        }
+       
+        // Show field error
+        function showFieldError(input, message) {
+            input.classList.add('error');
+           
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.textContent = message;
+           
+            input.parentNode.appendChild(errorElement);
+        }
+       
+        // Show loading state
+        function showLoading(formId, show = true) {
+            const form = document.getElementById(formId);
+            if (!form) return;
+           
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (!submitButton) return;
+           
+            if (show) {
+                // Store original button content
+                submitButton.dataset.originalText = submitButton.innerHTML;
+               
+                // Disable button and show loading
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            } else {
+                // Restore original button content
+                submitButton.disabled = false;
+                submitButton.innerHTML = submitButton.dataset.originalText || submitButton.innerHTML;
+            }
+        }
+       
+        // Track event for analytics
+        function trackEvent(eventName, properties = {}) {
+            // This is a placeholder for analytics tracking
+            // In a real application, you would integrate with a service like Google Analytics, Mixpanel, etc.
+           
+            console.log('Event tracked:', eventName, properties);
+           
+            // Example: Google Analytics 4
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, properties);
+            }
+           
+            // Example: Mixpanel
+            if (typeof mixpanel !== 'undefined') {
+                mixpanel.track(eventName, properties);
+            }
+        }
+       
+        // Setup event listeners
+        function setupEventListeners() {
+            try {
+                // Navigation
+                setupNavigationListeners();
+               
+                // User dropdown
+                setupUserDropdownListeners();
+               
+                // Forms
+                setupFormListeners();
+               
+                // Fuel cards
+                setupFuelCardListeners();
+               
+                // Mobile menu
+                setupMobileMenu();
+               
+                // Search functionality
+                setupSearchFunctionality();
+               
+                // Other elements
+                setupOtherListeners();
+               
+            } catch (error) {
+                console.error('Error setting up event listeners:', error);
+                showAlert('Application setup failed. Please refresh the page.', 'error');
+            }
+        }
+       
+        // Setup navigation listeners
+        function setupNavigationListeners() {
+            const navHome = document.getElementById('navHome');
+            const navAbout = document.getElementById('navAbout');
+            const navRescue = document.getElementById('navRescue');
+            const navLogin = document.getElementById('navLogin');
+            const navSignup = document.getElementById('navSignup');
+           
+            if (navHome) {
+                navHome.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection('home');
+                });
+            }
+           
+            if (navAbout) {
+                navAbout.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection('about');
+                });
+            }
+           
+            if (navRescue) {
+                navRescue.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection('rescue');
+                });
+            }
+           
+            if (navLogin) {
+                navLogin.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection('login');
+                });
+            }
+           
+            if (navSignup) {
+                navSignup.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection('signup');
+                });
+            }
+        }
+       
+        // Setup user dropdown listeners
+        function setupUserDropdownListeners() {
+            const userIcon = document.getElementById('userIcon');
+            const profileBtn = document.getElementById('profileBtn');
+            const ordersBtn = document.getElementById('ordersBtn');
+            const customerSupportBtn = document.getElementById('customerSupportBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+           
+            if (userIcon) {
+                userIcon.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleUserDropdown();
+                });
+            }
+           
+            if (profileBtn) {
+                profileBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeUserDropdown();
+                    showSection('profile');
+                });
+            }
+           
+            if (ordersBtn) {
+                ordersBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeUserDropdown();
+                    showSection('orders');
+                });
+            }
+           
+            if (customerSupportBtn) {
+                customerSupportBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeUserDropdown();
+                    showSection('support');
+                });
+            }
+           
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeUserDropdown();
+                    logout();
+                });
+            }
+        }
+       
+        // Setup form listeners
+        function setupFormListeners() {
+            const orderForm = document.getElementById('orderForm');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const profileForm = document.getElementById('profileForm');
+           
+            if (orderForm) {
+                orderForm.addEventListener('submit', handleOrderSubmit);
+               
+                // Order form real-time updates
+                const fuelTypeSelect = document.getElementById('fuelType');
+                const quantityInput = document.getElementById('quantity');
+               
+                if (fuelTypeSelect) {
+                    fuelTypeSelect.addEventListener('change', updateOrderSummary);
+                }
+               
+                if (quantityInput) {
+                    quantityInput.addEventListener('input', updateOrderSummary);
+                }
+            }
+           
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+            }
+           
+            if (signupForm) {
+                signupForm.addEventListener('submit', handleSignup);
+            }
+           
+            if (profileForm) {
+                profileForm.addEventListener('submit', handleProfileUpdate);
+            }
+        }
+       
+        // Setup fuel card listeners
+        function setupFuelCardListeners() {
+            const fuelCards = document.querySelectorAll('.fuel-card');
+           
+            fuelCards.forEach(card => {
+                card.addEventListener('click', () => selectFuelType(card));
+            });
+        }
+       
+        // Setup mobile menu
+        function setupMobileMenu() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+           
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+            }
+        }
+       
+        // Setup search functionality
+        function setupSearchFunctionality() {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+           
+            if (searchButton) {
+                searchButton.addEventListener('click', handleSearch);
+            }
+           
+            if (searchInput) {
+                // Debounce search input
+                const debouncedSearch = debounce(handleSearch, 300);
+                searchInput.addEventListener('input', debouncedSearch);
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        handleSearch();
+                    }
+                });
+            }
+        }
+       
+        // Setup other listeners
+        function setupOtherListeners() {
+            const logo = document.getElementById('logo');
+            const footerLinks = document.querySelectorAll('[id^="footer"]');
+            const signupLink = document.getElementById('signupLink');
+            const loginLink = document.getElementById('loginLink');
+            const heroBtn = document.querySelector('.btn-hero');
+            const profilePic = document.getElementById('profilePic');
+            const profilePicInput = document.getElementById('profilePicInput');
+           
+            // Logo click
+            if (logo) {
+                logo.addEventListener('click', () => showSection('about'));
+            }
+           
+            // Footer links
+            footerLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = link.id.replace('footer', '').toLowerCase();
+                    if (section === 'home') showSection('home');
+                    else if (section === 'about') showSection('about');
+                    else if (section === 'rescue') showSection('rescue');
+                    else if (section === 'support') showSection('support');
+                });
+            });
+           
+            // Cross-form links
+            if (signupLink) {
+                signupLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection('signup');
+                });
+            }
+           
+            if (loginLink) {
+                loginLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection('login');
+                });
+            }
+           
+            // Hero button
+            if (heroBtn) {
+                heroBtn.addEventListener('click', () => {
+                    showSection('home');
+                    const orderForm = document.getElementById('orderForm');
+                    if (orderForm) {
+                        orderForm.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+           
+            // Profile picture
+            if (profilePic) {
+                profilePic.addEventListener('click', () => {
+                    if (profilePicInput) {
+                        profilePicInput.click();
+                    }
+                });
+            }
+           
+            if (profilePicInput) {
+                profilePicInput.addEventListener('change', handleProfilePicChange);
+            }
+           
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (e) => {
+                const userDropdown = document.getElementById('userDropdown');
+                const userIcon = document.getElementById('userIcon');
+               
+                if (userDropdown && userIcon && !userDropdown.contains(e.target) && !userIcon.contains(e.target)) {
+                    closeUserDropdown();
+                }
+            });
+        }
+       
+        // Show section
+        function showSection(section) {
+            // Hide all sections
+            const sections = [
+                'homeContent', 'aboutContent', 'rescueContent',
+                'loginContent', 'signupContent', 'profileInfoContent',
+                'ordersPlacedContent', 'customerSupportContent'
+            ];
+           
+            sections.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.add('hidden');
+                }
+            });
+           
+            // Show/hide hero section based on current section
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                if (section === 'home') {
+                    heroSection.classList.remove('hidden');
+                } else {
+                    heroSection.classList.add('hidden');
+                }
+            }
+           
+            // Show target section
+            let targetSection;
+            switch(section) {
+                case 'home':
+                    targetSection = 'homeContent';
+                    break;
+                case 'about':
+                    targetSection = 'aboutContent';
+                    break;
+                case 'rescue':
+                    targetSection = 'rescueContent';
+                    break;
+                case 'login':
+                    targetSection = 'loginContent';
+                    break;
+                case 'signup':
+                    targetSection = 'signupContent';
+                    break;
+                case 'profile':
+                    targetSection = 'profileInfoContent';
+                    break;
+                case 'orders':
+                    targetSection = 'ordersPlacedContent';
+                    break;
+                case 'support':
+                    targetSection = 'customerSupportContent';
+                    break;
+                default:
+                    targetSection = 'homeContent';
+            }
+           
+            const element = document.getElementById(targetSection);
+            if (element) {
+                element.classList.remove('hidden');
+            }
+           
+            // Update navigation
+            updateNavigation(section);
+            currentSection = section;
+           
+            // Close user dropdown
+            closeUserDropdown();
+           
+            // Close mobile menu
+            closeMobileMenu();
+           
+            // Load user data if viewing profile
+            if (section === 'profile') {
+                loadUserData();
+            }
+           
+            // Update orders list if viewing orders
+            if (section === 'orders') {
+                updateOrdersList();
+            }
+           
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+           
+            // Track section view
+            trackEvent('page_view', {
+                page_title: section.charAt(0).toUpperCase() + section.slice(1)
+            });
+        }
+       
+        // Update navigation active state
+        function updateNavigation(section) {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const navHome = document.getElementById('navHome');
+            const navAbout = document.getElementById('navAbout');
+            const navRescue = document.getElementById('navRescue');
+            const navLogin = document.getElementById('navLogin');
+            const navSignup = document.getElementById('navSignup');
+           
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+           
+            switch(section) {
+                case 'home':
+                    if (navHome) navHome.classList.add('active');
+                    break;
+                case 'about':
+                    if (navAbout) navAbout.classList.add('active');
+                    break;
+                case 'rescue':
+                    if (navRescue) navRescue.classList.add('active');
+                    break;
+                case 'login':
+                    if (navLogin) navLogin.classList.add('active');
+                    break;
+                case 'signup':
+                    if (navSignup) navSignup.classList.add('active');
+                    break;
+            }
+        }
+       
+        // Toggle user dropdown
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
+        }
+       
+        // Close user dropdown
+        function closeUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown) {
+                dropdown.classList.remove('show');
+            }
+        }
+       
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            if (navMenu) {
+                navMenu.classList.toggle('active');
+            }
+        }
+       
+        // Close mobile menu
+        function closeMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            if (navMenu) {
+                navMenu.classList.remove('active');
+            }
+        }
+       
+        // Handle order form submission
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+           
+            if (!validateForm('orderForm')) {
+                return;
+            }
+           
+            showLoading('orderForm', true);
+           
+            // Simulate API call delay
+            setTimeout(() => {
+                const formData = new FormData(e.target);
+                const orderData = {
+                    fuelType: formData.get('fuelType'),
+                    quantity: parseInt(formData.get('quantity')),
+                    address: formData.get('address')
+                };
+               
+                // Create new order
+                const newOrder = {
+                    id: `FS-${new Date().getFullYear()}-${String(orders.length + 1).padStart(3, '0')}`,
+                    fuelType: getFuelDisplayName(orderData.fuelType),
+                    quantity: orderData.quantity,
+                    address: orderData.address,
+                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
+                    status: 'pending'
+                };
+               
+                orders.unshift(newOrder);
+               
+                // Calculate total
+                const pricing = fuelPricing.calculateTotal(orderData.fuelType, orderData.quantity);
+               
+                // Track order event
+                trackEvent('order_created', {
+                    order_id: newOrder.id,
+                    fuel_type: orderData.fuelType,
+                    quantity: orderData.quantity,
+                    total_amount: pricing.total
+                });
+               
+                // Show success message
+                showAlert(`Order placed successfully! Order ID: ${newOrder.id}. Total: ₹${pricing.total.toFixed(2)}`, 'success');
+               
+                // Reset form
+                e.target.reset();
+                const orderSummary = document.getElementById('orderSummary');
+                if (orderSummary) {
+                    orderSummary.style.display = 'none';
+                }
+               
+                // Update orders if user is viewing orders section
+                if (currentSection === 'orders') {
+                    updateOrdersList();
+                }
+               
+                showLoading('orderForm', false);
+            }, 1000);
+        }
+       
+        // Handle login
+        function handleLogin(e) {
+            e.preventDefault();
+           
+            if (!validateForm('loginForm')) {
+                return;
+            }
+           
+            showLoading('loginForm', true);
+           
+            // Simulate API call delay
+            setTimeout(() => {
+                const formData = new FormData(e.target);
+                const email = formData.get('loginEmail');
+               
+                // Simulate login
+                const token = btoa(`${email}:${Date.now()}`);
+               
+                currentUser = {
+                    name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
+                    email: email,
+                    phone: '+1-555-0123',
+                    address: '123 Main Street, City, State',
+                    token: token
+                };
+               
+                isLoggedIn = true;
+                appStorage.setItem('fuelshot_user', JSON.stringify(currentUser));
+                appStorage.setItem('fuelshot_token', token);
+               
+                // Track login event
+                trackEvent('login', {
+                    user_id: currentUser.email
+                });
+               
+                updateAuthUI();
+                showAlert('Login successful! Welcome back.', 'success');
+                showSection('home');
+               
+                // Reset form
+                e.target.reset();
+               
+                showLoading('loginForm', false);
+            }, 1000);
+        }
+       
+        // Handle signup
+        function handleSignup(e) {
+            e.preventDefault();
+           
+            if (!validateForm('signupForm')) {
+                return;
+            }
+           
+            showLoading('signupForm', true);
+           
+            // Simulate API call delay
+            setTimeout(() => {
+                const formData = new FormData(e.target);
+                const name = formData.get('signupName');
+                const email = formData.get('signupEmail');
+               
+                // Check if user already exists
+                const existingUsers = JSON.parse(appStorage.getItem('fuelshot_users') || '[]');
+                const userExists = existingUsers.some(user => user.email === email);
+               
+                if (userExists) {
+                    showAlert('An account with this email already exists. Please login instead.', 'error');
+                    showSection('login');
+                    showLoading('signupForm', false);
+                    return;
+                }
+               
+                // Create new user
+                const token = btoa(`${email}:${Date.now()}`);
+                const newUser = {
+                    name: name,
+                    email: email,
+                    phone: '',
+                    address: '',
+                    token: token,
+                    createdAt: new Date().toISOString()
+                };
+               
+                // Save to users list
+                existingUsers.push(newUser);
+                appStorage.setItem('fuelshot_users', JSON.stringify(existingUsers));
+               
+                currentUser = newUser;
+                isLoggedIn = true;
+                appStorage.setItem('fuelshot_user', JSON.stringify(currentUser));
+                appStorage.setItem('fuelshot_token', token);
+               
+                // Track signup event
+                trackEvent('signup', {
+                    user_id: newUser.email
+                });
+               
+                updateAuthUI();
+                showAlert('Account created successfully! Welcome to FuelSHOT.', 'success');
+                showSection('home');
+               
+                // Reset form
+                e.target.reset();
+               
+                showLoading('signupForm', false);
+            }, 1000);
+        }
+       
+        // Handle profile update
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+           
+            if (!validateForm('profileForm')) {
+                return;
+            }
+           
+            showLoading('profileForm', true);
+           
+            // Simulate API call delay
+            setTimeout(() => {
+                const formData = new FormData(e.target);
+               
+                if (currentUser) {
+                    currentUser.name = formData.get('profileNameInput') || currentUser.name;
+                    currentUser.email = formData.get('profileEmailInput') || currentUser.email;
+                    currentUser.phone = formData.get('profilePhoneInput') || currentUser.phone;
+                    currentUser.address = formData.get('profileAddressInput') || currentUser.address;
+                   
+                    appStorage.setItem('fuelshot_user', JSON.stringify(currentUser));
+                   
+                    // Show success message
+                    const message = document.getElementById('profileSaveMessage');
+                    if (message) {
+                        message.style.display = 'block';
+                        setTimeout(() => {
+                            message.style.display = 'none';
+                        }, 3000);
+                    }
+                }
+               
+                showLoading('profileForm', false);
+            }, 1000);
+        }
+       
+        // Handle profile picture change
+        function handleProfilePicChange(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const profilePic = document.getElementById('profilePic');
+                    if (profilePic) {
+                        profilePic.src = e.target.result;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+       
+        // Select fuel type from card
+        function selectFuelType(card) {
+            const fuelType = card.dataset.type;
+            const fuelSelect = document.getElementById('fuelType');
+           
+            if (fuelSelect) {
+                fuelSelect.value = fuelType;
+                updateOrderSummary();
+               
+                // Scroll to order form
+                const orderForm = document.getElementById('orderForm');
+                if (orderForm) {
+                    orderForm.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+           
+            // Visual feedback
+            const fuelCards = document.querySelectorAll('.fuel-card');
+            fuelCards.forEach(c => c.style.transform = '');
+            card.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 200);
+        }
+       
+        // Update order summary
+        function updateOrderSummary() {
+            const fuelType = document.getElementById('fuelType')?.value;
+            const quantity = parseInt(document.getElementById('quantity')?.value) || 0;
+           
+            if (fuelType && quantity > 0) {
+                const pricing = fuelPricing.calculateTotal(fuelType, quantity);
+               
+                const summary = document.getElementById('orderSummary');
+                if (summary) {
+                    summary.innerHTML = `
+                        <h3>Order Summary</h3>
+                        <p><strong>Fuel Type:</strong> ${getFuelDisplayName(fuelType)}</p>
+                        <p><strong>Quantity:</strong> ${quantity} liters</p>
+                        <p><strong>Price per liter:</strong> ₹${pricing.basePrice.toFixed(2)}</p>
+                        <p><strong>Subtotal:</strong> ₹${pricing.subtotal.toFixed(2)}</p>
+                        <p><strong>Tax (18% GST):</strong> ₹${pricing.tax.toFixed(2)}</p>
+                        <p><strong>Delivery Fee:</strong> ₹${pricing.deliveryFee.toFixed(2)}</p>
+                        <p><strong>Total:</strong> ₹${pricing.total.toFixed(2)}</p>
+                        <p><em>Estimated delivery time: 30 minutes</em></p>
+                    `;
+                    summary.style.display = 'block';
+                }
+            } else {
+                const summary = document.getElementById('orderSummary');
+                if (summary) {
+                    summary.style.display = 'none';
+                }
+            }
+        }
+       
+        // Get fuel display name
+        function getFuelDisplayName(fuelType) {
+            const names = {
+                'petrol': 'Regular Petrol',
+                'diesel': 'Regular Diesel',
+                'speed-petrol': 'Speed Petrol',
+                'speed-diesel': 'Speed Diesel'
+            };
+            return names[fuelType] || fuelType;
+        }
+       
+        // Update authentication UI
+        function updateAuthUI() {
+            const loginNav = document.getElementById('navLogin');
+            const signupNav = document.getElementById('navSignup');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const authButtons = document.querySelector('.auth-buttons');
+           
+            if (isLoggedIn) {
+                // Hide login/signup, show logout
+                if (loginNav) loginNav.style.display = 'none';
+                if (signupNav) signupNav.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'block';
+                if (authButtons) authButtons.style.display = 'none';
+               
+                // Update user icon
+                const userIcon = document.getElementById('userIcon');
+                if (userIcon && currentUser) {
+                    userIcon.innerHTML = currentUser.name.charAt(0).toUpperCase();
+                    userIcon.title = currentUser.name;
+                }
+               
+                // Create logout button in nav if it doesn't exist
+                if (!document.getElementById('navLogoutBtn')) {
+                    const logoutNavItem = document.createElement('li');
+                    logoutNavItem.className = 'nav-item';
+                    logoutNavItem.innerHTML = '<a href="#" class="nav-link" id="navLogoutBtn">Logout</a>';
+                   
+                    const navMenu = document.getElementById('navMenu');
+                    if (navMenu) {
+                        navMenu.appendChild(logoutNavItem);
+                       
+                        // Add event listener to the new logout button
+                        const navLogoutBtn = document.getElementById('navLogoutBtn');
+                        if (navLogoutBtn) {
+                            navLogoutBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                logout();
+                            });
+                        }
+                    }
+                }
+            } else {
+                // Show login/signup, hide logout
+                if (loginNav) loginNav.style.display = 'block';
+                if (signupNav) signupNav.style.display = 'block';
+                if (logoutBtn) logoutBtn.style.display = 'none';
+                if (authButtons) authButtons.style.display = 'flex';
+               
+                // Reset user icon
+                const userIcon = document.getElementById('userIcon');
+                if (userIcon) {
+                    userIcon.innerHTML = '<i class="fas fa-user"></i>';
+                    userIcon.title = 'User Menu';
+                }
+               
+                // Remove logout button from nav if it exists
+                const navLogoutBtn = document.getElementById('navLogoutBtn');
+                if (navLogoutBtn) {
+                    navLogoutBtn.parentElement.remove();
+                }
+            }
+        }
+       
+        // Logout
+        function logout() {
+            currentUser = null;
+            isLoggedIn = false;
+            appStorage.removeItem('fuelshot_user');
+            appStorage.removeItem('fuelshot_token');
+           
+            updateAuthUI();
+            showAlert('You have been logged out successfully.', 'info');
+            showSection('home');
+        }
+       
+        // Check authentication status
+        function checkAuthStatus() {
+            const savedUser = appStorage.getItem('fuelshot_user');
+            const savedToken = appStorage.getItem('fuelshot_token');
+           
+            if (savedUser && savedToken) {
+                try {
+                    const user = JSON.parse(savedUser);
+                   
+                    // Simple token validation
+                    if (user.token === savedToken) {
+                        currentUser = user;
+                        isLoggedIn = true;
+                        updateAuthUI();
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                }
+               
+                // If we reach here, there's an issue with the saved data
+                logout();
+            }
+        }
+       
+        // Load user data
+        function loadUserData() {
+            if (currentUser && document.getElementById('profileForm')) {
+                document.getElementById('profileNameInput').value = currentUser.name || '';
+                document.getElementById('profileEmailInput').value = currentUser.email || '';
+                document.getElementById('profilePhoneInput').value = currentUser.phone || '';
+                document.getElementById('profileAddressInput').value = currentUser.address || '';
+            }
+        }
+       
+        // Update orders list
+        function updateOrdersList() {
+            const ordersList = document.querySelector('.orders-list');
+            if (ordersList) {
+                ordersList.innerHTML = orders.map(order => `
+                    <div class="order-item">
+                        <div class="order-details">
+                            <h4>Order #${order.id}</h4>
+                            <p>${order.fuelType} • ${order.quantity} liters • ${order.address}</p>
+                            <p>Placed on: ${order.date} • ${order.time}</p>
+                        </div>
+                        <div class="order-status status-${order.status}">
+                            ${order.status === 'delivered' ? 'Delivered' : 'In Transit'}
+                        </div>
+                    </div>
+                `).join('');
+               
+                // Update count
+                const orderCount = document.querySelector('.orders-list + .text-center p');
+                if (orderCount) {
+                    orderCount.textContent = `Showing ${orders.length} of ${orders.length} orders`;
+                }
+            }
+        }
+       
+        // Handle search
+        function handleSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+           
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            if (searchTerm) {
+                if (searchTerm.includes('fuel') || searchTerm.includes('petrol') || searchTerm.includes('diesel')) {
+                    showSection('home');
+                } else if (searchTerm.includes('about') || searchTerm.includes('company')) {
+                    showSection('about');
+                } else if (searchTerm.includes('rescue') || searchTerm.includes('emergency')) {
+                    showSection('rescue');
+                } else if (searchTerm.includes('support') || searchTerm.includes('help')) {
+                    showSection('support');
+                } else {
+                    showAlert(`No results found for "${searchTerm}". Try searching for fuel, about, rescue, or support.`, 'info');
+                    showSection('home');
+                }
+            }
+        }
+       
+        // Load fuel prices
+        async function loadFuelPrices() {
+            try {
+                // In a real app, this would fetch from API
+                // const prices = await apiService.getFuelPrices();
+               
+                // For demo, we'll use the hardcoded prices
+                console.log('Fuel prices loaded:', fuelPricing.basePrices);
+            } catch (error) {
+                console.error('Failed to load fuel prices:', error);
+                showAlert('Failed to load current fuel prices. Using default prices.', 'warning');
+            }
+        }
+       
+        // Update fuel prices
+        function updateFuelPrices() {
+            // Simulate random price fluctuations of ±2%
+            Object.keys(fuelPricing.basePrices).forEach(fuelType => {
+                const fluctuation = 1 + (Math.random() * 0.04 - 0.02);
+                fuelPricing.basePrices[fuelType] *= fluctuation;
+                fuelPricing.basePrices[fuelType] = Math.round(fuelPricing.basePrices[fuelType] * 100) / 100;
+            });
+           
+            // Update order summary if visible
+            const orderSummary = document.getElementById('orderSummary');
+            if (orderSummary && orderSummary.style.display !== 'none') {
+                updateOrderSummary();
+            }
+           
+            console.log('Fuel prices updated:', fuelPricing.basePrices);
+        }
+       
+        // Update UI
+        function updateUI() {
+            // This function is now handled directly in showSection()
+        }
+       
+        // Show alert/notification
+        function showAlert(message, type = 'info') {
+            // Create alert element
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+           
+            // Add to DOM
+            document.body.appendChild(alert);
+           
+            // Remove after 5 seconds
+            setTimeout(() => {
+                alert.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 300);
+            }, 5000);
+        }
+       
+        // Additional utility functions
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2
+            }).format(amount);
+        }
+       
+        function formatDate(date) {
+            return new Intl.DateTimeFormat('en-IN', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            }).format(new Date(date));
+        }
+       
+        // Console log for debugging
+        console.log('FuelSHOT functionality loaded successfully!');
+       
+        // Export functions for external use if needed
+        window.FuelSHOT = {
+            showSection,
+            showAlert,
+            getCurrentUser: () => currentUser,
+            isUserLoggedIn: () => isLoggedIn,
+            getOrders: () => orders
+        };
+    </script>
+</body>
+</html>
